@@ -5,10 +5,10 @@ import androidx.annotation.NonNull;
 import com.example.retrofitclientpocketbase.network.Api;
 import com.example.retrofitclientpocketbase.network.callbacks.SimpleDataCallback;
 import com.example.retrofitclientpocketbase.network.models.ResponseStudents;
+import com.example.retrofitclientpocketbase.network.models.Student;
 
 import java.io.IOException;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,11 +26,11 @@ public class Service {
         api = retrofit.create(Api.class);
     }
 
-    public void getAllStudents(SimpleDataCallback<ResponseStudents> callback){
+    public void getAllStudents(SimpleDataCallback<ResponseStudents> callback) {
         Call<ResponseStudents> call = api.getAllStudents();
         call.enqueue(new Callback<ResponseStudents>() {
             @Override
-            public void onResponse(@NonNull Call<ResponseStudents> call,@NonNull Response<ResponseStudents> response) {
+            public void onResponse(@NonNull Call<ResponseStudents> call, @NonNull Response<ResponseStudents> response) {
                 if (!response.isSuccessful()) {
                     callback.onLoad(null);
                     return;
@@ -48,6 +48,33 @@ public class Service {
 
             @Override
             public void onFailure(Call<ResponseStudents> call, Throwable throwable) {
+
+            }
+        });
+    }
+
+    public void createStudent(Student student, SimpleDataCallback<Student> callback){
+        Call<Student> call = api.createStudent(student);
+        call.enqueue(new Callback<Student>() {
+            @Override
+            public void onResponse(Call<Student> call, Response<Student> response) {
+                if (!response.isSuccessful()) {
+                    callback.onLoad(null);
+                    return;
+                }
+                try (final Student student = response.body()) {
+                    if (student == null) {
+                        callback.onLoad(null);
+                        return;
+                    }
+                    callback.onLoad(student);
+                } catch (IOException e) {
+                    callback.onLoad(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Student> call, Throwable throwable) {
 
             }
         });

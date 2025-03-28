@@ -2,38 +2,73 @@ package com.example.retrofitclientpocketbase.network.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Closeable;
+import java.io.IOException;
 
-public class Student {
+
+public class Student implements Closeable {
 
     @SerializedName("address")
-    public String address;
+    private String address;
 
     @SerializedName("age")
-    public Integer age;
+    private String age;
 
     @SerializedName("collectionId")
-    public String collectionId;
+    private String collectionId;
 
     @SerializedName("collectionName")
-    public String collectionName;
+    private String collectionName;
 
     @SerializedName("created")
-    public String created;
+    private String created;
 
     @SerializedName("height")
-    public Integer height;
+    private String height;
 
     @SerializedName("id")
-    public String id;
+    private String id;
 
     @SerializedName("name")
-    public String name;
+    private String name;
 
     @SerializedName("updated")
-    public String updated;
+    private String updated;
 
     @SerializedName("weight")
-    public Integer weight;
+    private String weight;
 
+    @Override
+    public void close() throws IOException {
+
+    }
+
+    public Student(String address, String age, String height, String name, String weight) {
+        this.address = address;
+        this.age = age;
+        this.height = height;
+        this.name = name;
+        this.weight = weight;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
 }
 
