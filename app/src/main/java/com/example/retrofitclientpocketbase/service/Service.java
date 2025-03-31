@@ -79,4 +79,19 @@ public class Service {
             }
         });
     }
+
+    public void deleteStudent(String id, SimpleDataCallback<Student> callback){
+        Call<Void> call = api.deleteStudent(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable throwable) {
+
+            }
+        });
+    }
 }

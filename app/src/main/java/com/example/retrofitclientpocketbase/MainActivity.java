@@ -2,7 +2,6 @@ package com.example.retrofitclientpocketbase;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.retrofitclientpocketbase.network.callbacks.SimpleDataCallback;
 import com.example.retrofitclientpocketbase.network.models.ResponseStudents;
 import com.example.retrofitclientpocketbase.network.models.Student;
+import com.example.retrofitclientpocketbase.network.models.StudentAdapter;
 import com.example.retrofitclientpocketbase.service.Service;
 
 import java.util.ArrayList;
@@ -25,10 +25,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Service service;
-    private ArrayAdapter<String> adapter;
+    private StudentAdapter adapter;
     ListView studentsList;
     Button addBtn, resetBtn;
-    List<String> students;
+    List<Student> students;
     EditText nameField, ageField, weightField, heightField, address;
 
     @Override
@@ -48,25 +48,35 @@ public class MainActivity extends AppCompatActivity {
 
         students = new ArrayList<>();
         service = new Service();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, students);
+        adapter = new StudentAdapter(this, R.layout.student_item, students);
         studentsList.setAdapter(adapter);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Student student = new Student(
-                        address.getText().toString(),
-                        ageField.getText().toString(),
-                        heightField.getText().toString(),
-                        nameField.getText().toString(),
-                        weightField.getText().toString());
 
-                service.createStudent(student, new SimpleDataCallback<Student>() {
-                    @Override
-                    public void onLoad(Student data) {
-                        Toast.makeText(MainActivity.this, data.getName(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (!address.getText().toString().isEmpty() &&
+                        !ageField.getText().toString().isEmpty() &&
+                        !heightField.getText().toString().isEmpty() &&
+                        !nameField.getText().toString().isEmpty() &&
+                        !weightField.getText().toString().isEmpty()
+                ) {
+                    Student student = new Student(
+                            address.getText().toString(),
+                            ageField.getText().toString(),
+                            heightField.getText().toString(),
+                            nameField.getText().toString(),
+                            weightField.getText().toString());
+
+                    service.createStudent(student, new SimpleDataCallback<Student>() {
+                        @Override
+                        public void onLoad(Student data) {
+                            Toast.makeText(MainActivity.this, data.getName(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    Toast.makeText(MainActivity.this, "Не все поля заполнены", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -77,9 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onLoad(ResponseStudents data) {
                         students.clear();
-                        for (Student student : data.getStudents()) {
-                            students.add(student.getName() + " " + student.getAge());
-                        }
+                        students.addAll(data.getStudents());
                         adapter.notifyDataSetChanged();
                     }
                 });
