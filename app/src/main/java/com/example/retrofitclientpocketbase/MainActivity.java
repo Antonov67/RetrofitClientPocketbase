@@ -2,6 +2,7 @@ package com.example.retrofitclientpocketbase;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -89,6 +90,18 @@ public class MainActivity extends AppCompatActivity {
                         students.clear();
                         students.addAll(data.getStudents());
                         adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+
+        studentsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                service.deleteStudent(students.get(i).getId(), new SimpleDataCallback<String>() {
+                    @Override
+                    public void onLoad(String data) {
+                        Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
