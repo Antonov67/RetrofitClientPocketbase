@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
                     }
                 });
+                students.remove(i);
+                adapter.notifyDataSetChanged();
             }
         });
 
