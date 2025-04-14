@@ -1,4 +1,4 @@
-package com.example.retrofitclientpocketbase;
+package com.example.retrofitclientpocketbase.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.retrofitclientpocketbase.R;
 import com.example.retrofitclientpocketbase.network.callbacks.SimpleDataCallback;
 import com.example.retrofitclientpocketbase.network.models.ResponseStudents;
 import com.example.retrofitclientpocketbase.network.models.Student;
